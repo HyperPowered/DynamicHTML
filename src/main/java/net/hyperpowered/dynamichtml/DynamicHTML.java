@@ -70,7 +70,7 @@ public class DynamicHTML {
 
     public DynamicDocument loadDocumentFromClasspath(String name, String classpath) {
         StringBuilder builder = new StringBuilder();
-        try (InputStream inputStream = classLoader.getResourceAsStream(classpath)) {
+        try (InputStream inputStream = getClass().getResourceAsStream(classpath)) {
             if (inputStream != null) {
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                     String linha;
@@ -86,6 +86,12 @@ public class DynamicHTML {
         }
 
         DynamicDocument document = new DynamicDocument(builder);
+        documents.put(name, document);
+        return document;
+    }
+
+    public DynamicDocument addFromText(String name, String HTML){
+        DynamicDocument document = new DynamicDocument(new StringBuilder(HTML));
         documents.put(name, document);
         return document;
     }

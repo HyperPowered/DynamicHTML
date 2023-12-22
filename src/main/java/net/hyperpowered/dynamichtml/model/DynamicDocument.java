@@ -71,7 +71,4 @@ public class DynamicDocument {
         return fhtml;
     }
 
-    interface ProcessHandler{
-        void handler(Map<String, String> replace, List<OptionalKey> optionals, Map<String, MultipleComponent<?>> multiples);
-    }
 }
