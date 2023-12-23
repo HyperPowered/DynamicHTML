@@ -60,7 +60,8 @@ public class DynamicHTML {
         this.loaderOptions = loaderOptions;
         this.classLoader = this.getClass().getClassLoader();
         if(loaderOptions.isAutomaticPathLoader()){
-            getFilesInClasspath(loaderOptions.getPathToLoad()).forEach(s -> loadDocumentFromClasspath(s.getFileName().toString(), s.toString()));
+            getFilesInClasspath(loaderOptions.getPathToLoad()).forEach(s ->
+                    loadDocumentFromClasspath(s.getFileName().toString(), s.toString(), "default"));
         }
     }
 
@@ -68,7 +69,7 @@ public class DynamicHTML {
         return documents.get(name);
     }
 
-    public DynamicDocument loadDocumentFromClasspath(String name, String classpath) {
+    public DynamicDocument loadDocumentFromClasspath(String name, String language, String classpath) {
         StringBuilder builder = new StringBuilder();
         try (InputStream inputStream = getClass().getResourceAsStream(classpath)) {
             if (inputStream != null) {
@@ -85,14 +86,16 @@ public class DynamicHTML {
             e.printStackTrace();
         }
 
-        DynamicDocument document = new DynamicDocument(builder);
-        documents.put(name, document);
-        return document;
+        return addTextToDocument(name, language, builder.toString());
     }
 
-    public DynamicDocument addFromText(String name, String HTML){
-        DynamicDocument document = new DynamicDocument(new StringBuilder(HTML));
-        documents.put(name, document);
+    public DynamicDocument addFromText(String name, String language, String HTML){
+        return addTextToDocument(name, language, HTML);
+    }
+
+    private DynamicDocument addTextToDocument(String name, String language, String builder){
+        DynamicDocument document = documents.getOrDefault(name, new DynamicDocument());
+        document.addLanguage(builder, language);
         return document;
     }
 

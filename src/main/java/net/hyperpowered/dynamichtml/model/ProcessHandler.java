@@ -5,5 +5,5 @@ import java.util.Map;
 
 public interface ProcessHandler {
 
-    public void handler(Map<String, String> replace, List<OptionalKey> optionals, Map<String, MultipleComponent<?>> multiples);
+    public String handler(Map<String, String> replace, List<OptionalKey> optionals, Map<String, MultipleComponent<?>> multiples);
 }

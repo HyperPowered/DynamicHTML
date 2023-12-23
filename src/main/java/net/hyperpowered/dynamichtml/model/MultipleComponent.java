@@ -12,11 +12,13 @@ public class MultipleComponent<T> {
     private List<T> items;
     private String documentName;
     private DocumentHandler<T> handler;
+    private String language;
 
-    public MultipleComponent(List<T> items, String documentName, DocumentHandler<T> handler){
+    public MultipleComponent(List<T> items, String documentName, String language, DocumentHandler<T> handler){
         this.items = items;
         this.documentName = documentName;
         this.handler = handler;
+        this.language = language;
     }
 
     public String build(){
@@ -27,7 +29,7 @@ public class MultipleComponent<T> {
             List<OptionalKey> optionals = new ArrayList<>();
             Map<String, MultipleComponent<?>> multiples = new HashMap<>();
             handler.handler(replace, optionals, multiples, item);
-            builder.append(doc.build(replace, optionals, multiples));
+            builder.append(doc.build(replace, optionals, multiples, language));
             builder.append("\n");
         }
         return builder.toString();
