@@ -12,7 +12,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class DynamicDocument {
 
-    private Map<String, String> languages;
+    private Map<String, String> languages = new HashMap<>();
     private CacheOptions cacheOptions = new CacheOptions();
     private String cached = null;
     private Long lastCache = 0L;
