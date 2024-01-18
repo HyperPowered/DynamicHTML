@@ -96,6 +96,7 @@ public class DynamicHTML {
     private DynamicDocument addTextToDocument(String name, String language, String builder){
         DynamicDocument document = documents.getOrDefault(name, new DynamicDocument());
         document.addLanguage(builder, language);
+        documents.put(name, document);
         return document;
     }
 
