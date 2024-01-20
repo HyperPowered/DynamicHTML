@@ -48,7 +48,7 @@ public class LoaderUtils {
             if(arg.length == 1){
                 addAllFiles(folderPath+"/"+s, instance);
             } else{
-                instance.loadDocumentFromClasspath(arg[0], "default", "/"+folderPath+"/"+s);
+                instance.loadDocumentFromClasspath(folderPath+"/"+arg[0], "default", "/"+folderPath+"/"+s);
             }
         }
     }
