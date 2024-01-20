@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import net.hyperpowered.dynamichtml.model.DynamicDocument;
 import net.hyperpowered.dynamichtml.options.LoaderOptions;
+import net.hyperpowered.dynamichtml.utils.LoaderUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -56,12 +57,12 @@ public class DynamicHTML {
 
     @SneakyThrows
     public DynamicHTML(LoaderOptions loaderOptions){
+        if(instance != null) return;
         setInstance(this);
         this.loaderOptions = loaderOptions;
         this.classLoader = this.getClass().getClassLoader();
         if(loaderOptions.isAutomaticPathLoader()){
-            getFilesInClasspath(loaderOptions.getPathToLoad()).forEach(s ->
-                    loadDocumentFromClasspath(s.getFileName().toString(), s.toString(), "default"));
+            LoaderUtils.addAllFiles(loaderOptions.getPathToLoad(), this);
         }
     }
 
@@ -70,6 +71,7 @@ public class DynamicHTML {
     }
 
     public DynamicDocument loadDocumentFromClasspath(String name, String language, String classpath) {
+        System.out.println(classpath);
         StringBuilder builder = new StringBuilder();
         try (InputStream inputStream = getClass().getResourceAsStream(classpath)) {
             if (inputStream != null) {
@@ -99,29 +101,4 @@ public class DynamicHTML {
         documents.put(name, document);
         return document;
     }
-
-    public static List<Path> getFilesInClasspath(String folder) throws IOException, URISyntaxException {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        URL resource = classLoader.getResource(folder);
-
-        if (resource == null) {
-            return Collections.emptyList();
-        }
-
-        Path folderPath = Paths.get(resource.toURI());
-        return listFilesInFolder(folderPath);
-    }
-
-    public static List<Path> listFilesInFolder(Path folderPath) throws IOException {
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(folderPath)) {
-            List<Path> filesInFolder = new ArrayList<>();
-            for (Path path : directoryStream) {
-                if (Files.isRegularFile(path)) {
-                    filesInFolder.add(path);
-                }
-            }
-            return filesInFolder;
-        }
-    }
-
 }

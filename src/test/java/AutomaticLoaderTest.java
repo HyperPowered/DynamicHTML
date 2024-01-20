@@ -1,0 +1,13 @@
+import net.hyperpowered.dynamichtml.DynamicHTML;
+import net.hyperpowered.dynamichtml.model.DynamicDocument;
+import net.hyperpowered.dynamichtml.options.LoaderOptions;
+import net.hyperpowered.dynamichtml.utils.LoaderUtils;
+
+public class AutomaticLoaderTest {
+
+    public static void main(String[] args) {
+        System.out.println(LoaderUtils.getFilesFromFolderInClasspath("default"));
+        DynamicHTML d = new DynamicHTML(LoaderOptions.builder().automaticPathLoader(true).pathToLoad("default").build());
+        System.out.println(DynamicHTML.getDocuments().values().size());
+    }
+}
