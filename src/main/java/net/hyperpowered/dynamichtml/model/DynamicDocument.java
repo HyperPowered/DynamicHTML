@@ -1,6 +1,8 @@
 package net.hyperpowered.dynamichtml.model;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import net.hyperpowered.dynamichtml.DynamicHTML;
 import net.hyperpowered.dynamichtml.options.CacheOptions;
 
@@ -12,13 +14,23 @@ import java.util.Map;
 @NoArgsConstructor
 public class DynamicDocument {
 
+    @Getter
+    private String name;
+    @Getter
     private Map<String, String> languages = new HashMap<>();
+    @Getter
+    @Setter
     private CacheOptions cacheOptions = new CacheOptions();
     private String cached = null;
     private Long lastCache = 0L;
 
 
-    public DynamicDocument(CacheOptions cacheOptions) {
+    public DynamicDocument(String name){
+        this.name = name;
+    }
+
+    public DynamicDocument(String name, CacheOptions cacheOptions) {
+        this.name = name;
         this.cacheOptions = cacheOptions;
     }
 

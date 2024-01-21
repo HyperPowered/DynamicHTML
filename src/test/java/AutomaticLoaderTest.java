@@ -8,6 +8,8 @@ public class AutomaticLoaderTest {
     public static void main(String[] args) {
         System.out.println(LoaderUtils.getFilesFromFolderInClasspath("default"));
         DynamicHTML d = new DynamicHTML(LoaderOptions.builder().automaticPathLoader(true).pathToLoad("default").build());
-        System.out.println(DynamicHTML.getDocuments().values().size());
+        for (DynamicDocument df : DynamicHTML.getDocuments().values()) {
+            System.out.println(df.getName());
+        }
     }
 }
