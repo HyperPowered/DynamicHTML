@@ -62,16 +62,15 @@ public class DynamicHTML {
         this.loaderOptions = loaderOptions;
         this.classLoader = this.getClass().getClassLoader();
         if(loaderOptions.isAutomaticPathLoader()){
-            LoaderUtils.addAllFiles(loaderOptions.getPathToLoad(), this);
+            LoaderUtils.addAllFiles(loaderOptions.getPathToLoad(), this, loaderOptions);
         }
     }
 
     public DynamicDocument get(String name){
-        return documents.get(name);
+        return documents.getOrDefault(name, null);
     }
 
     public DynamicDocument loadDocumentFromClasspath(String name, String language, String classpath) {
-        System.out.println(classpath);
         StringBuilder builder = new StringBuilder();
         try (InputStream inputStream = getClass().getResourceAsStream(classpath)) {
             if (inputStream != null) {

@@ -7,9 +7,9 @@ public class AutomaticLoaderTest {
 
     public static void main(String[] args) {
         System.out.println(LoaderUtils.getFilesFromFolderInClasspath("default"));
-        DynamicHTML d = new DynamicHTML(LoaderOptions.builder().automaticPathLoader(true).pathToLoad("default").build());
+        DynamicHTML d = new DynamicHTML(LoaderOptions.builder().automaticPathLoader(true).pathDefineLanguage(true).pathToLoad("default").build());
         for (DynamicDocument df : DynamicHTML.getDocuments().values()) {
-            System.out.println(df.getName());
+            System.out.println(df.getName() + " Languages: "+df.getLanguages().keySet());
         }
     }
 }

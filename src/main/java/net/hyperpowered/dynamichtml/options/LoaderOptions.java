@@ -13,4 +13,5 @@ public class LoaderOptions {
 
     private boolean automaticPathLoader = false;
     private String pathToLoad = "templates";
+    private boolean pathDefineLanguage = false;
 }

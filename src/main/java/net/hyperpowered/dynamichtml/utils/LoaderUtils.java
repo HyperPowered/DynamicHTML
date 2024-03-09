@@ -1,6 +1,7 @@
 package net.hyperpowered.dynamichtml.utils;
 
 import net.hyperpowered.dynamichtml.DynamicHTML;
+import net.hyperpowered.dynamichtml.options.LoaderOptions;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -16,19 +17,13 @@ public class LoaderUtils {
 
     public static List<String> getFilesFromFolderInClasspath(String folderPath) {
         List<String> fileList = new ArrayList<>();
-
-        // Obtém o ClassLoader atual
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
-        // Obtém a URL da pasta no classpath
         URL folderUrl = classLoader.getResource(folderPath);
 
         if (folderUrl != null) {
             try {
-                // Converte a URL para um caminho de arquivo
                 Path folderPathInFileSystem = Paths.get(folderUrl.toURI());
 
-                // Lista todos os arquivos na pasta
                 try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(folderPathInFileSystem)) {
                     for (Path path : directoryStream) {
                         fileList.add(path.getFileName().toString());
@@ -42,13 +37,24 @@ public class LoaderUtils {
         return fileList;
     }
 
-    public static void addAllFiles(String folderPath, DynamicHTML instance){
+    public static void addAllFiles(String folderPath, DynamicHTML instance, LoaderOptions options) {
         for (String s : getFilesFromFolderInClasspath(folderPath)) {
             String[] arg = s.split("\\.");
-            if(arg.length == 1){
-                addAllFiles(folderPath+"/"+s, instance);
-            } else{
-                instance.loadDocumentFromClasspath(folderPath+"/"+arg[0], "default", "/"+folderPath+"/"+s);
+            if (arg.length == 1) {
+                addAllFiles(folderPath + "/" + s, s, instance, options, true);
+            } else {
+                instance.loadDocumentFromClasspath(arg[0], "default", "/" + folderPath + "/" + s);
+            }
+        }
+    }
+
+    public static void addAllFiles(String folderPath, String rootPath, DynamicHTML instance, LoaderOptions options, boolean first) {
+        for (String s : getFilesFromFolderInClasspath(folderPath)) {
+            String[] arg = s.split("\\.");
+            if (arg.length == 1) {
+                addAllFiles(folderPath + "/" + s, rootPath + "/" + s, instance, options, false);
+            } else {
+                instance.loadDocumentFromClasspath(options.isPathDefineLanguage() && first ? arg[0] : rootPath + "/" + arg[0], options.isPathDefineLanguage() && first ? rootPath : "default", "/" + folderPath + "/" + s);
             }
         }
     }
