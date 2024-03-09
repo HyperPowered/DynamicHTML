@@ -6,7 +6,7 @@
 
     <groupId>net.hyperpowered</groupId>
     <artifactId>DynamicHTML</artifactId>
-    <version>0.9.10-SNAPSHOT</version>
+    <version>0.9.12-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
